@@ -5,6 +5,10 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * This class represents a server for a chat application. It handles incoming client connections,
+ * message broadcasting to all clients, and client sign-out.
+ */
 public class Server implements Runnable {
     
     Socket socket;
@@ -13,9 +17,16 @@ public class Server implements Runnable {
     private static UserTwo userTwo;
     private static UserThird userThird;
 
+    // Mapping from sockets to usernames to keep track of who is connected
     static Map<Socket, String> socketToUsername = new HashMap<>();
+
+    // List of all client writers to broadcast messages
     public static Vector client = new Vector();
-    
+
+    /**
+     * Constructor that sets the client socket.
+     * @param socket The socket associated with a client connection.
+     */
     public Server (Socket socket) {
         try {
             this.socket = socket;
@@ -24,6 +35,9 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * Run method to handle client logic, reads data from client, and broadcasts messages.
+     */
     public void run() {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -45,6 +59,7 @@ public class Server implements Runnable {
                     break;
                 }
 
+                // Broadcast the message to all clients
                 for (int i = 0; i < client.size(); i++) {
                     try {
                         BufferedWriter bw = (BufferedWriter) client.get(i);
@@ -61,6 +76,12 @@ public class Server implements Runnable {
         }
     }
 
+
+    /**
+     * Handles client sign-out, removes them from the broadcast list, and closes their socket.
+     * @param writer The BufferedWriter associated with the client's socket.
+     * @param socket The client's socket.
+     */
     private void handleSignOut(BufferedWriter writer, Socket socket) {
         try {
             client.remove(writer);
@@ -72,6 +93,11 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     * Main method to set up server and handle incoming client connections.
+     * It initializes necessary resources and listens on a server socket.
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) throws Exception {
         ServerSocket s = new ServerSocket(2003);
         clientsInitialized = new CountDownLatch(3); // 3 client instances
