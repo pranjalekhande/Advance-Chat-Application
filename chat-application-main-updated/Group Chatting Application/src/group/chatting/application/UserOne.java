@@ -353,6 +353,9 @@ public class UserOne implements ActionListener, Runnable {
             }
         }
     }
+    /**
+     * EmojiPicker - a dialog for selecting emojis to insert into the text field.
+     */
     static class EmojiPicker extends JDialog {
         private static final String[] EMOJI_CODES = {
                 "\uD83D\uDE00", "\uD83D\uDE03", "\uD83D\uDE04", // Smileys
@@ -360,9 +363,6 @@ public class UserOne implements ActionListener, Runnable {
                 "❤", "\uD83D\uDC96", "\uD83C\uDF89"  // Miscellaneous
         };
 
-        /**
-         * EmojiPicker - a dialog for selecting emojis to insert into the text field.
-         */
         public EmojiPicker(JFrame parent, JTextField textField) {
             super(parent, "Select Emoji", true);
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
