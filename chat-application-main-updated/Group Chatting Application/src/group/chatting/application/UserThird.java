@@ -177,7 +177,6 @@ public class UserThird implements ActionListener, Runnable {
     /**
      * Handles action events from buttons in the interface, specifically the send button.
      * It sends the message entered in the text field to the server and updates the UI accordingly.
-     *
      * @param ae the ActionEvent object containing details about the event.
      */
     public void actionPerformed(ActionEvent ae) {
@@ -230,7 +229,6 @@ public class UserThird implements ActionListener, Runnable {
             e.printStackTrace(); // General catch block for any other unforeseen errors.
         }
     }
-
     /**
      * Formats a label to display a message in the chat.
      * @param out the message to be formatted.
