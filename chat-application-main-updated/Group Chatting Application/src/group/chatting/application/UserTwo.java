@@ -8,18 +8,25 @@ import java.text.*;
 import java.net.*;
 import java.io.*;
 
+/**
+ * This class represents a client in a chat application. It handles user interactions,
+ * message sending, and displays messages in a chat window.
+ */
 public class UserTwo implements ActionListener, Runnable {
-    JTextField text;
-    JPanel a1;
-    static Box vertical = Box.createVerticalBox();
-    static JFrame f = new JFrame();
+    JTextField text; // Text field for inputting messages
+    JPanel a1; // Panel for displaying messages
+    static Box vertical = Box.createVerticalBox(); // Vertical box to stack message panels
+    static JFrame f = new JFrame(); // Main frame of the chat application
     static DataOutputStream dout;
     String flag2 = "";
 
-    BufferedReader reader;
-    BufferedWriter writer;
-    String name = "Shriya";
+    BufferedReader reader; // Reader for reading data from server
+    BufferedWriter writer; // Writer for sending data to server
+    String name = "Shriya"; // User's name
 
+    /**
+     * Constructor that initializes the user interface and network connections.
+     */
     UserTwo() {
 
         f.setLayout(null);
@@ -141,7 +148,7 @@ public class UserTwo implements ActionListener, Runnable {
         String password = new String(passwordChars);
 //        String password = JOptionPane.showInputDialog(f, "Enter your password:");
 
-
+        // Authenticate the user
         if (UserAuthentication.authenticate(username, password)) {
             try {
                 Socket socket = new Socket("localhost", 2003);
@@ -169,12 +176,21 @@ public class UserTwo implements ActionListener, Runnable {
 //        }
     }
 
+    /**
+     * Handles action events from buttons in the interface, specifically the send button.
+     * It sends the message entered in the text field to the server and updates the UI accordingly.
+     *
+     * @param ae the ActionEvent object containing details about the event.
+     */
     public void actionPerformed(ActionEvent ae) {
+
+        // Retrieve the message from the text field and trim whitespace.
         try {
             String message = text.getText().trim(); // Trim to remove leading/trailing whitespace
 
             // Check if the message is empty after trimming
             if (message.equals("Type a message...") || message.isEmpty()) {
+                // Display a warning dialog if the message is empty or only placeholder
                 JOptionPane.showMessageDialog(f, "Please enter a message before sending.", "Empty Message", JOptionPane.WARNING_MESSAGE);
                 return; // Exit the method without sending the placeholder text or empty message
             }
@@ -186,34 +202,44 @@ public class UserTwo implements ActionListener, Runnable {
 //            System.out.println(out);
             JPanel p2 = formatLabel(out);
 
+            // Ensure the layout manager is set to BorderLayout for proper placement.
             a1.setLayout(new BorderLayout());
 
+            // Create a new panel to hold the message, aligning it to the right (end).
             JPanel right = new JPanel(new BorderLayout());
             right.add(p2, BorderLayout.LINE_END);
             right.setBackground(Color.WHITE);
             vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
+            vertical.add(Box.createVerticalStrut(15)); // Add a vertical strut for spacing.
 
+            // Add the composed vertical panel containing the message to the main chat area.
             a1.add(vertical, BorderLayout.PAGE_START);
 
+            // Send the formatted message to the server.
             try {
                 writer.write(out);
                 writer.write("\r\n");
                 writer.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Print stack trace if there's an error during sending.
             }
 
             text.setText("");
 
+            // Refresh and revalidate the frame to update the UI.
             f.repaint();
             f.invalidate();
             f.validate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // General catch block for any other unforeseen errors.
         }
     }
 
+    /**
+     * Formats a label to display a message in the chat.
+     * @param out the message to be formatted.
+     * @return JPanel the panel containing the formatted message.
+     */
     public static JPanel formatLabel(String out) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
@@ -239,6 +265,10 @@ public class UserTwo implements ActionListener, Runnable {
         return panel;
     }
 
+
+    /**
+     * Main execution method for the client thread that listens for messages from the server.
+     */
     public void run() {
         try {
             String msg = "";
@@ -274,12 +304,27 @@ public class UserTwo implements ActionListener, Runnable {
         f.validate();
     }
 
+    /**
+     * The main method for the UserTwo application. It creates and starts the UserTwo
+     * instance in a separate thread. This separation allows the GUI to remain responsive
+     * by decoupling the user interface from long-running operations such as network communication.
+     */
     public static void main(String[] args) {
+        // Create an instance of UserTwo, which sets up the GUI and networking capabilities.
         UserTwo two = new UserTwo();
+
+        // Wrap the UserTwo instance in a Thread to ensure that the GUI does not freeze during
+        // network operations or long-running processes.
         Thread t1 = new Thread(two);
+
+        // Start the thread, which will invoke the run method of the UserTwo class where
+        // the actual messaging handling and UI updates are performed.
         t1.start();
     }
 
+    /**
+     * PlaceholderTextField - a JTextField subclass that shows a placeholder text when empty.
+     */
     static class PlaceholderTextField extends JTextField {
         private String placeholder;
 
