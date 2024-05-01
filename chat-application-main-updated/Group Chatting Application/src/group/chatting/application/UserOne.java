@@ -9,19 +9,26 @@ import java.io.*;
 import java.util.Calendar;
 
 
+/**
+ * This class represents a client in a chat application. It handles user interactions,
+ * message sending, and displays messages in a chat window.
+ */
 public class UserOne implements ActionListener, Runnable {
-    JTextField text;
-    JPanel a1;
-    static Box vertical = Box.createVerticalBox();
-    static JFrame f = new JFrame();
+    JTextField text; // Text field for inputting messages
+    JPanel a1; // Panel for displaying messages
+    static Box vertical = Box.createVerticalBox(); // Vertical box to stack message panels
+    static JFrame f = new JFrame(); // Main frame of the chat application
     static DataOutputStream dout;
     String flag1 = "";
     ImageIcon user1Icon;
 
-    BufferedReader reader;
-    BufferedWriter writer;
-    String name = "Praveen";
+    BufferedReader reader; // Reader for reading data from server
+    BufferedWriter writer; // Writer for sending data to server
+    String name = "Praveen"; // User's name
 
+    /**
+     * Constructor that initializes the user interface and network connections.
+     */
     public UserOne() {
 
         f.setLayout(null);
@@ -168,13 +175,22 @@ public class UserOne implements ActionListener, Runnable {
 
     }
 
+    /**
+     * Handles action events from buttons in the interface, specifically the send button.
+     * It sends the message entered in the text field to the server and updates the UI accordingly.
+     *
+     * @param ae the ActionEvent object containing details about the event.
+     */
     public void actionPerformed(ActionEvent ae) {
+
+        // Retrieve the message from the text field and trim whitespace.
         try {
-            String message = text.getText().trim(); // I am doing Trim to remove leading/trailing whitespace it was giving error while reading message correctly
+            String message = text.getText().trim(); // Trim to remove leading/trailing whitespace
 
 
-            // Checking if the message is empty after trimming, since the we dont want to send empty message (it was sending latest message again and again)
+            // Check if the message is empty after trimming
             if (message.equals("Type a message...") || message.isEmpty()) {
+                // Display a warning dialog if the message is empty or only placeholder.
                 JOptionPane.showMessageDialog(f, "Please enter a message before sending.", "Empty Message", JOptionPane.WARNING_MESSAGE);
                 return; // Exit the method without sending the placeholder text or empty message
             }
@@ -186,37 +202,45 @@ public class UserOne implements ActionListener, Runnable {
 
             JPanel p2 = formatLabel(out);
 
+            // Ensure the layout manager is set to BorderLayout for proper placement.
             a1.setLayout(new BorderLayout());
 
+            // Create a new panel to hold the message, aligning it to the right (end).
             JPanel right = new JPanel(new BorderLayout());
             right.setBackground(Color.WHITE);
             right.add(p2, BorderLayout.LINE_END);
             vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
+            vertical.add(Box.createVerticalStrut(15)); // Add a vertical strut for spacing.
 
+            // Add the composed vertical panel containing the message to the main chat area.
             a1.add(vertical, BorderLayout.PAGE_START);
 
+            // Send the formatted message to the server.
             try {
                 writer.write(out);
                 writer.write("\r\n");
                 writer.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Print stack trace if there's an error during sending.
             }
 
             text.setText("");
 
+            // Refresh and revalidate the frame to update the UI.
             f.repaint();
             f.invalidate();
             f.validate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // General catch block for any other unforeseen errors.
         }
     }
 
 
-
-
+    /**
+     * Formats a label to display a message in the chat.
+     * @param out the message to be formatted.
+     * @return JPanel the panel containing the formatted message.
+     */
     public static JPanel formatLabel(String out) {
 //        System.out.println(" got message from format label");
 
@@ -246,6 +270,9 @@ public class UserOne implements ActionListener, Runnable {
 
 
 
+    /**
+     * Main execution method for the client thread that listens for messages from the server.
+     */
     public void run() {
         try {
             String msg = "";
@@ -282,11 +309,31 @@ public class UserOne implements ActionListener, Runnable {
         f.invalidate();
         f.validate();
     }
+
+
+    /**
+     * The main method for the UserOne application. It creates and starts the UserOne
+     * instance in a separate thread. This separation allows the GUI to remain responsive
+     * by decoupling the user interface from long-running operations such as network communication.
+     */
     public static void main(String[] args) {
+
+        // Create an instance of UserOne, which sets up the GUI and networking capabilities.
         UserOne one = new UserOne();
+
+        // Wrap the UserOne instance in a Thread to ensure that the GUI does not freeze during
+        // network operations or long-running processes.
         Thread t1 = new Thread(one);
+
+        // Start the thread, which will invoke the run method of the UserOne class where
+        // the actual messaging handling and UI updates are performed.
         t1.start();
     }
+
+
+    /**
+     * PlaceholderTextField - a JTextField subclass that shows a placeholder text when empty.
+     */
     static class PlaceholderTextField extends JTextField {
         private String placeholder;
 
@@ -313,6 +360,9 @@ public class UserOne implements ActionListener, Runnable {
                 "❤", "\uD83D\uDC96", "\uD83C\uDF89"  // Miscellaneous
         };
 
+        /**
+         * EmojiPicker - a dialog for selecting emojis to insert into the text field.
+         */
         public EmojiPicker(JFrame parent, JTextField textField) {
             super(parent, "Select Emoji", true);
             setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

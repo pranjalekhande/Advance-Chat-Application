@@ -190,7 +190,7 @@ public class UserTwo implements ActionListener, Runnable {
 
             // Check if the message is empty after trimming
             if (message.equals("Type a message...") || message.isEmpty()) {
-                // Display a warning dialog if the message is empty or only placeholder.
+                // Display a warning dialog if the message is empty or only placeholder
                 JOptionPane.showMessageDialog(f, "Please enter a message before sending.", "Empty Message", JOptionPane.WARNING_MESSAGE);
                 return; // Exit the method without sending the placeholder text or empty message
             }
