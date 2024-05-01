@@ -314,8 +314,16 @@ public class UserOne implements ActionListener, Runnable {
      * by decoupling the user interface from long-running operations such as network communication.
      */
     public static void main(String[] args) {
+        // Create an instance of UserOne, which sets up the GUI and networking capabilities.
         UserOne one = new UserOne();
+
+        // Wrap the UserOne instance in a Thread to ensure that the GUI does not freeze during
+        // network operations or long-running processes.
         Thread t1 = new Thread(one);
+
+
+        // Start the thread, which will invoke the run method of the UserOne class where
+        // the actual messaging handling and UI updates are performed.
         t1.start();
     }
 
