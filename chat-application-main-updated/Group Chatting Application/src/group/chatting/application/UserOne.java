@@ -176,52 +176,62 @@ public class UserOne implements ActionListener, Runnable {
     }
 
     /**
-     * Handles action events from buttons in the interface.
+     * Handles action events from buttons in the interface, specifically the send button.
+     * It sends the message entered in the text field to the server and updates the UI accordingly.
+     *
      * @param ae the ActionEvent object containing details about the event.
      */
+
     public void actionPerformed(ActionEvent ae) {
+
+        // Retrieve the message from the text field and trim whitespace.
         try {
-            String message = text.getText().trim(); // I am doing Trim to remove leading/trailing whitespace it was giving error while reading message correctly
+            String message = text.getText().trim();
 
-
-            // Checking if the message is empty after trimming, since the we dont want to send empty message (it was sending latest message again and again)
+            // Check if the message is either the placeholder text or empty.
             if (message.equals("Type a message...") || message.isEmpty()) {
+                // Display a warning dialog if the message is empty or only placeholder.
                 JOptionPane.showMessageDialog(f, "Please enter a message before sending.", "Empty Message", JOptionPane.WARNING_MESSAGE);
-                return; // Exit the method without sending the placeholder text or empty message
+                return; // Exit the method without sending the placeholder text or empty message.
             }
 
-            String out =text.getText();
+            String out = text.getText();
             flag1 = "1";
             // Clearing the text field after sending the message
             text.setText("");
 
             JPanel p2 = formatLabel(out);
 
+            // Ensure the layout manager is set to BorderLayout for proper placement.
             a1.setLayout(new BorderLayout());
 
+            // Create a new panel to hold the message, aligning it to the right (end).
             JPanel right = new JPanel(new BorderLayout());
             right.setBackground(Color.WHITE);
             right.add(p2, BorderLayout.LINE_END);
             vertical.add(right);
-            vertical.add(Box.createVerticalStrut(15));
+            vertical.add(Box.createVerticalStrut(15)); // Add a vertical strut for spacing.
 
+            // Add the composed vertical panel containing the message to the main chat area.
             a1.add(vertical, BorderLayout.PAGE_START);
 
+            // Send the formatted message to the server.
             try {
                 writer.write(out);
                 writer.write("\r\n");
                 writer.flush();
             } catch (Exception e) {
-                e.printStackTrace();
+                e.printStackTrace(); // Print stack trace if there's an error during sending.
             }
 
             text.setText("");
 
+            // Refresh and revalidate the frame to update the UI.
             f.repaint();
             f.invalidate();
             f.validate();
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // General catch block for any other unforeseen errors.
         }
     }
 
@@ -297,6 +307,12 @@ public class UserOne implements ActionListener, Runnable {
         f.invalidate();
         f.validate();
     }
+
+    /**
+     * The main method for the UserOne application. It creates and starts the UserOne
+     * instance in a separate thread. This separation allows the GUI to remain responsive
+     * by decoupling the user interface from long-running operations such as network communication.
+     */
     public static void main(String[] args) {
         UserOne one = new UserOne();
         Thread t1 = new Thread(one);
