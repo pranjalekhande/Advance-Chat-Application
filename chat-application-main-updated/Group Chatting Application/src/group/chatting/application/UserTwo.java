@@ -50,7 +50,7 @@ public class UserTwo implements ActionListener, Runnable {
             }
         });
 
-        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/mirzapur.png"));
+        ImageIcon i4 = new ImageIcon(ClassLoader.getSystemResource("icons/group-chat-logo.png"));
         Image i5 = i4.getImage().getScaledInstance(60,60, Image.SCALE_DEFAULT);
         ImageIcon i6 = new ImageIcon(i5);
         JLabel profile = new JLabel(i6);
@@ -196,7 +196,7 @@ public class UserTwo implements ActionListener, Runnable {
             }
 
 
-            String out = text.getText();
+            String out = "<html><p>" + name + "</p><p>" + text.getText() + "</p></html>";
 //            System.out.println(out);
             flag2 = "2";
 //            System.out.println(out);
@@ -246,8 +246,9 @@ public class UserTwo implements ActionListener, Runnable {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel output = new JLabel(out);
-        output.setFont(Font.getFont("Segoe UI Emoji"));
+        output.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 12));
         output.setBackground(new Color(32, 97, 121));
+        output.setForeground(Color.WHITE);
         output.setOpaque(true);
         output.setBorder(new EmptyBorder(10, 15, 10, 40));
 

@@ -25,7 +25,7 @@ public class InformationPanel extends JFrame {
         infoPanel.add(Box.createRigidArea(new Dimension(0, 20))); // Add vertical spacing
 
         // Add user information
-        ImageIcon userIcon = new ImageIcon(ClassLoader.getSystemResource("icons/mirzapur.png"));
+        ImageIcon userIcon = new ImageIcon(ClassLoader.getSystemResource("icons/group-chat-logo.png"));
         Image scaledImage = userIcon.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         JLabel profilePicLabel = new JLabel(scaledIcon);
@@ -47,15 +47,15 @@ public class InformationPanel extends JFrame {
 
 
         // Add user information
-        addUserInfo(infoPanel, "icons/mirzapur.png", "Praveen");
+        addUserInfo(infoPanel, "icons/User_Icon_1.png", "Praveen");
         infoPanel.add(createSeparator());
 
-        addUserInfo(infoPanel, "icons/mirzapur.png", "Pranjal");
+        addUserInfo(infoPanel, "icons/User_Icon_2.png", "Pranjal");
         infoPanel.add(createSeparator());
-        addUserInfo(infoPanel, "icons/mirzapur.png", "Shriya");
+        addUserInfo(infoPanel, "icons/User_Icon_1.png", "Shriya");
         infoPanel.add(createSeparator());
 
-        addUserInfo(infoPanel, "icons/mirzapur.png", "Sudtida");
+        addUserInfo(infoPanel, "icons/User_Icon_2.png", "Sudtida");
 
 
         add(infoPanel, BorderLayout.CENTER);
