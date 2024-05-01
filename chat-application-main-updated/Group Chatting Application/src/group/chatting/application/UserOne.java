@@ -186,7 +186,7 @@ public class UserOne implements ActionListener, Runnable {
 
         // Retrieve the message from the text field and trim whitespace.
         try {
-            String message = text.getText().trim();
+            String message = text.getText().trim(); // Trim to remove leading/trailing whitespace
 
             // Check if the message is either the placeholder text or empty.
             if (message.equals("Type a message...") || message.isEmpty()) {
